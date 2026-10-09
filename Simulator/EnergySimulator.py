@@ -60,15 +60,15 @@ class EnergySimulator:
             "timestamp": current_time.isoformat(),
             "power_kw": observed_power_kw,
             "energy_kwh": energy_kwh,
-            "observed_value": observed_power_kw,
-            "expected_value": expected_power_kw,
+            "observed_value_kw": observed_power_kw,
+            "expected_value_kw": expected_power_kw,
             "severity": severity,
         }
 
     #Generates a batch of historical readings (useful for seeding databases).
     def generate_batch(self, count_per_hostel: int = 10) -> List[Dict]:
         data = []
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.timezone.utc) # current time
         for b in self.hostels:
             for i in range(count_per_hostel):
                 ts = now - datetime.timedelta(seconds=(count_per_hostel- i) * self.interval_seconds)
@@ -94,5 +94,5 @@ class EnergySimulator:
 
 
 simulator = EnergySimulator(interval_seconds=5)
-batch_readings = simulator.generate_batch(count_per_hostel=2)
-print("Sample record:", json.dumps(batch_readings[0], indent=2))
+batch_readings = simulator.generate_batch(count_per_hostel=1)
+print("Sample record:", json.dumps(batch_readings, indent=2))
